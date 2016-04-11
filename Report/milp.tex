@@ -1,0 +1,111 @@
+\documentclass{article}
+
+\title{Machine Learning in Practice}
+
+\author{
+Marc de Groot
+Marta Parada Segui
+Patrick Tan
+Suzanne van den Bosch
+Zhuoran Liu}
+
+
+\begin{document}
+
+{\Huge Machine Learning in Practice}
+\\
+\\
+\centering {\LARGE
+Marc de Groot,
+Marta Parada Segui,
+Patrick Tan,
+Suzanne van den Bosch,
+Zhuoran Liu}
+
+\section{Problem description}
+
+We are working on Home Depot Product Search Relevance. Our goal is to accurately predict the relevance of a search result on the home depot website. For background information we would refer to https://www.kaggle.com/c/home-depot-product-search-relevance.
+
+\section{Approach}
+
+We have tried several approaches at once. Some more fruitful than others.
+
+\subsection{Levensthein Distance}
+This approach checked if the product listed in the test data occurs in the training data and if that was the case it would check the Levensthein distance between the query used in the test data and those in the training data. If a match was found then the relevance listed in the training data would be used. This approach focuses on using the human knowledge that the training data contains.
+
+\subsection{Support Vector Machines}
+
+\subsection{Random Forests}
+
+\section{Results}
+
+The results of the different approaches varies. Not everything has been completed at the time of writing.
+
+\subsection{Levensthein Distance}
+It turned out that exact matches were quite rare. Using Levensthein Distance did make this algorithm less vulnerable to typos since a low distance would still suggest a high probability that it was actually a match.
+
+\subsection{Support Vector Machines}
+
+\subsection{Random Forests}
+
+\section{Discussion}
+
+We are currently trying to refine the algorithms that work and see if we can combine the results in a way that they will be better than when we only use a single algorithm.\\
+
+\subsection{Things that went well this competion}
+
+\begin{itemize}
+\item Good group atmosphere
+\item Regular meetings
+\item Fair distribution of tasks
+\end{itemize}
+
+\subsection{Things we can improve on for the next competition}
+
+\begin{itemize}
+\item Perhaps planning to do more work in the beginning stages so that the last few weeks will be less stressful. This was due to our scheduled exams and other courses though.
+\item Sharing our work more regularely. Not sharing unfinished work made it harder for us to help each other.
+\end{itemize}
+
+\section{Individual contributions}
+
+\subsection{Marc}
+
+\begin{itemize}
+\item
+\item
+\end{itemize}
+
+\subsection{Marta}
+
+\begin{itemize}
+\item
+\item
+\end{itemize}
+
+\subsection{Patrick}
+
+\begin{itemize}
+\item Communication with the teachers and coach
+\item Reserve meeting areas
+\item Program the algorithm using Levensthein
+\item Create the group account used for submissions
+\item Trying to assist Liu with SVMs
+\item Write part of this report
+\end{itemize}
+
+\subsection{Suzanne}
+
+\begin{itemize}
+\item
+\item
+\end{itemize}
+
+\subsection{Zhuoran}
+
+\begin{itemize}
+\item
+\item
+\end{itemize}
+
+\end{document}
