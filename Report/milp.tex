@@ -34,6 +34,7 @@ We have tried several approaches at once. Some more fruitful than others.
 This approach checked if the product listed in the test data occurs in the training data and if that was the case it would check the Levensthein distance between the query used in the test data and those in the training data. If a match was found then the relevance listed in the training data would be used. This approach focuses on using the human knowledge that the training data contains.
 
 \subsection{Support Vector Machines}
+This approach construct a  hyper-plane do the regression. Since the method SVR has the advantages that it is effective in high dimensional spaces, memory efficient and different kernels can be used. Also only when feature greater than samples give poor performance. So in this HomeDepot case it works. We have much more dimensions of samples than the features, even we use the vector space method. The SVR constructs the equation of hyper-plane to do the regression. Here it is efficient, because support vectors set is just a small part of the whole samples.
 
 \subsection{Random Forests}
 
@@ -45,6 +46,7 @@ The results of the different approaches varies. Not everything has been complete
 It turned out that exact matches were quite rare. Using Levensthein Distance did make this algorithm less vulnerable to typos since a low distance would still suggest a high probability that it was actually a match.
 
 \subsection{Support Vector Machines}
+Firstly, we tried to use the method vector space and convert the training set into a vector space with every dimension a specific word. But when the total amount rose to 1000 samples, we have 256 dimensions already. Then we used the features as same as the Random Forest Trees and it worked. Due to the long running time, we tried firstly the rbf kernel. The result seems like a little bit overfitting. It get a result in Kaggle submission around 0.63666. Then we used different kernels and tried to tune the parameters well. Finally, we got the result(not yet)
 
 \subsection{Random Forests}
 
@@ -102,6 +104,12 @@ We are currently trying to refine the algorithms that work and see if we can com
 \end{itemize}
 
 \subsection{Zhuoran}
+\begin{itemize}
+\item Find and share materials and books about SVM method, vector space and python plot.
+\item Summarize idea and share it in Github.
+\item Made the SVR method work and tuned it.
+\item Write part of this report.
+\end{itemize}
 
 \begin{itemize}
 \item
