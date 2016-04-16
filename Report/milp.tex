@@ -46,7 +46,7 @@ The results of the different approaches varies. Not everything has been complete
 It turned out that exact matches were quite rare. Using Levensthein Distance did make this algorithm less vulnerable to typos since a low distance would still suggest a high probability that it was actually a match.
 
 \subsection{Support Vector Machines}
-Firstly, we tried to use the method vector space and convert the training set into a vector space with every dimension a specific word. But when the total amount rose to 1000 samples, we have 256 dimensions already. Then we used the features as same as the Random Forest Trees and it worked. Due to the long running time, we tried firstly the rbf kernel. The result seems like a little bit overfitting. It get a result in Kaggle submission around 0.63666. Then we used different kernels and tried to tune the parameters well. Finally, we got the result(not yet)
+Firstly, we tried to use the method vector space and convert the training set into a vector space with every dimension a specific word. But when the total amount rose to 1000 samples, we have 256 dimensions already. So it is not reasonable. Then we used the features as same as the Random Forest Trees and it worked. Due to the long running time, we tried firstly the SVR with rbf kernel. The result seems like a little bit overfitting. It got a result 0.62666 in Kaggle submission. Then we used different kernels(polynomial and linear) and tried different parameters(gamma, degree and so on) to tune the model well. When writing the report, unfinished yet.
 
 \subsection{Random Forests}
 
