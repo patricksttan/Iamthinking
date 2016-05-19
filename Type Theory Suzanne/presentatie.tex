@@ -1,0 +1,246 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{algorithm2e}
+\usepackage[noend]{algorithmic}
+\usepackage{multicol}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[]{Strong Reduction for the Pure $\lambda$-calculus\\by Benjamin Gr$\acute{e}$goire and Xavier Leroy} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Suzanne van den Bosch} % Your name
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+%
+%  \tableofcontents
+%
+%\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+%
+
+\begin{frame}
+\frametitle{$\beta$-reduction}
+\begin{itemize}
+\item Weak $\beta$-reduction
+\item Strong $\beta$-reduction
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The Pure $\lambda$-calculus}
+Terms:
+\begin{equation*}
+a ::= x | \lambda x.a | a_1 a_2
+\end{equation*}
+Rules: 
+\begin{equation*}
+(\lambda x.a) a'  \Rightarrow a\{x \leftarrow a'\} \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;(\beta)
+\end{equation*}
+\begin{equation*}
+\;\;\;\;\;\;\;\;\;\;\;\:\Gamma(a)  \Rightarrow \Gamma (a') \;\;\;\;\; if\; a \Rightarrow a'  \;\;\;\;\;\;\;\;\;\;\;\;\;\; (context)
+\end{equation*}
+with $\Gamma ::= \lambda x.[] \;|\; []\; a\; |\; a\; [] $.
+We assume all $\lambda$-terms $a$ are strongly normalizing.
+\end{frame}
+
+\begin{frame}
+\frametitle{Two computational problems}
+\begin{itemize}
+\item To compute the normal form $\mathcal{N}(a)$ of a closed, strongly normalizing term $a$.
+\item To decide whether two closed, strongly normalizing term $a_1$ and $a_2$ are $\beta$-equivalent, written as $a_1 \approx a_2$.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Two computational problems}
+\begin{itemize}
+\item \textbf{To compute the normal form $\mathcal{N}(a)$ of a closed, strongly normalizing term $a$.}
+\item To decide whether two closed, strongly normalizing term $a_1$ and $a_2$ are $\beta$-equivalent, written as $a_1 \approx a_2$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Strong reduction by iterated symbolic weak reduction and readback}
+\begin{equation*}
+\mathcal{N}(a) = \mathcal{N}(\lambda x.a') = \lambda x.\mathcal{N}(a')
+\end{equation*}
+$\;$\\
+$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;$Problem: $a'$ is not necessarily closed.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The extended version}
+Terms:
+\begin{equation*}
+b ::= x | \lambda x.b | b_1 b_2 | [\tilde{x} v_1 ... v_n]
+\end{equation*}
+Values:
+\begin{equation*}
+v ::= \lambda x.b | [\tilde{x} v_1 ... v_n]
+\end{equation*}
+Rules: 
+\begin{equation*}
+(\lambda x.b) v  \Rightarrow b\{x \leftarrow v\} \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;(\beta_v)
+\end{equation*}
+\begin{equation*}
+[\tilde{x} v_1 ... v_n] v  \Rightarrow [\tilde{x} v_1 ... v_n v] \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;(\beta_s)
+\end{equation*}
+\begin{equation*}
+\;\;\;\;\;\;\;\;\;\;\;\:\Gamma_V(a)  \Rightarrow \Gamma_v (a') \;\;\;\;\; if\; a \Rightarrow a'  \;\;\;\;\;\;\;\;\;\;\;\;\;\; (context_v)
+\end{equation*}
+with $\Gamma_v ::= []\; v\; |\; b\; [] $.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Strong normalization procedure}
+\begin{enumerate}
+\item Normalize weakly
+\item Read back 
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Readback}
+\begin{equation}
+\mathcal{N}(b) = \mathcal{R}(\mathcal{V}(b))
+\end{equation}
+\begin{equation}
+\mathcal{R}(\lambda x.b) = \lambda y.\mathcal{N}((\lambda x.b [\tilde{y}])) (y fresh)
+\end{equation}
+\begin{equation}
+\mathcal{R}([\tilde{x} v_1 ... v_n]) = x \mathcal{R}(v_1) ... \mathcal{R}(v_n)
+\end{equation}
+
+$\mathcal{R}$ transforms values $v$ into normalized source terms $a$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Example}
+Consider the following source term
+\begin{equation*}
+a = (\lambda x.x)(\lambda y.(\lambda z.z) y (\lambda t.t)).
+\end{equation*}
+Weak symbolic evaluation reduces $a$ to 
+\begin{equation*}
+v = \lambda y.(\lambda z.z) y (\lambda t.t).
+\end{equation*}
+The readback will restart weak symbolic evaluation on 
+\begin{equation*}
+b = (\lambda y.(\lambda z.z) y (\lambda t.t)) [\tilde{u}].
+\end{equation*}
+After the weak symbolic evaluation, the value is 
+\begin{equation*}
+v' = [\tilde{u} (\lambda t.t)].
+\end{equation*}
+Eventually, we will get
+\begin{equation*}
+\mathcal{N}(a) = \mathcal{R}(v) = \lambda u.u (\lambda w.w).
+\end{equation*}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Questions?}
+\begin{figure}
+\includegraphics[width=0.6\linewidth]{questionmark}
+\end{figure}
+\end{frame}
+\end{document} 

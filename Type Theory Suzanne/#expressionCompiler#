@@ -1,0 +1,32 @@
+Require Import Datatypes.
+Require Import Lists.List.
+
+Inductive Exp : Set :=
+| Lit : nat -> Exp
+| Plus : Exp -> Exp -> Exp 
+| Mul : Exp -> Exp -> Exp.
+
+Fixpoint eval (e:Exp) : nat := 
+ match e with 
+| Lit x => x
+| Plus x y => (eval x) + (eval y)
+| Mul x y => (eval x) * (eval y)
+end.
+  
+Inductive RPN1 : Set :=
+| RPNlit : nat -> RPN1
+| RPNplus : RPN1
+| RPNmul : RPN1.
+
+Definition RPN := list RPN1. 
+
+Fixpoint rpn (e:Exp) : RPN := 
+ match e with 
+| Lit x => (RPNlit x) :: nil
+| Plus x y => add (rpn x) (add (rpn y) (RPNplus :: nil))
+| Mul x y => (rpn x) :: (rpn y) :: (RPNmul) :: nil
+end.
+
+
+
+Theorem interpret_equals_compile : forall e:Exp, Some (eval e) = rpn_eval (rpn e).

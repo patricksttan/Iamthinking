@@ -1,0 +1,152 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+\setcounter{section}{+2}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Radboud Universiteit Nijmegen} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Coq opdracht \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Suzanne van den Bosch \\ Studentnummer: s4021444} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Expression compiler}
+
+\begin{quote}
+\textit{Formalize both an interpreter and a compiler for a simple language of arithmetical expressions, and show that both give the same results. Compile the expressions to code for a simple stack machine. Use dependent types to make Coq aware of the fact that the compiled code will never lead to a run time error.}
+\end{quote}
+
+This is a short report that describes the formalization and discusses the choices made while formalizing.
+%------------------------------------------------
+
+\subsection{Inductive definition of Exp}
+The first assignment is to define the expressions. An expression is either a literal or two expressions connected with an operator. Because the literals are natural numbers, I decided to only use the operators $+$ and $*$.\\  
+To avoid repetition of code, I decided to add a type `$Binop$', instead of defining both operators separately. 
+
+\subsection{Defining eval}
+In this assignment we have to define the function $eval$, which has to give semantics to the expressions.
+Defining $eval$ was pretty straightforward, as I just used the semantics of $+$ and $*$ on the natural numbers.
+
+\subsection{Inductive definition of RPN}
+
+Reverse Polish Notation doesn't use infix notation like we are used to, but it uses the so-called postfix notation. 
+This means that all the operators follow it's operands. 
+Reverse Polish Notation is therefore a string of operands and operators. 
+We can also see this as a list of operands and operators, which is how I formalized it. 
+The list is made up of `RPN expressions'.
+
+\subsection{Defining compiler rpn}
+
+This assignment was pretty straightforward.
+
+\subsection{Defining rpn$\_$eval}
+
+This assignment was pretty straightforward.
+
+\subsection{Proving theorem}
+
+\begin{equation*}
+\forall \; e:Exp,\; Some\; (eval\; e) = rpn\_eval\; (rpn\; e)
+\end{equation*}
+
+Proving this theorem I got stuck almost immediately. But then Robbert gave me the hint that I had to use more Theorem's.
+So I used the following theorem to help me: 
+\begin{equation*}
+\forall e:Exp, \forall s: list nat, \forall t:RPN, rpn\_eval1\; s\; ((rpn \; e) ++ t) = rpn\_eval1 (eval \; e :: s)\; t
+\end{equation*}
+
+First I just ``Admitted" that theorem, and then the proof of the original theorem became very easy.
+And it turned out the second theorem was the most difficult to prove.
+I used some asserts, I decided not to make theorems out of the asserts, because it was easier to proof the asserts in the theorem, than start over in a new theorem.  
+
+
+\subsection{Including variables}
+
+For this assignment I first copy-pasted what I already had. Then I redefined all expressions to include a variable.
+I decided to store the variables in a list and defined a `lookup' function. This function is used when the variable is used. The variable is a function which takes a natural number as input and outputs expression. $Var 0$ corresponds to the first index of the variable list. 
+
+Here the proof of the theorem itself was almost as easy as without variables, because not much changed. 
+However, the ``help" theorem was a lot more difficult and I eventually got stuck in the next situation: 
+
+Assumption: 
+\begin{quote}
+IHt : Some (lookup$\_$var n varList) = rpn$\_$evalv1 (lookup$\_$var n varList :: l) t varList
+\end{quote}
+
+Goal: 
+\begin{quote}
+rpn$\_$evalv1 (lookup$\_$var n varList :: l) t varList = \\rpn$\_$evalv1 (lookup$\_$var n varList :: l) (a :: t) varList
+\end{quote}
+
+I just don't see how I can make these two parts equal.
+
+\subsection{Avoiding ``None" terms}
+You could add an extra term, for example ``Nonexist" while defining expressions. This way you can avoid the term None while defining rpn$\_$eval. And then you would have to omit the Option entirely, because if you don't use the None, then there's no point in using an Option. 
+
+
+
+
+
+\end{document}
